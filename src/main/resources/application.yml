@@ -4,7 +4,7 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${DB_URI}
+    url: ${DB_URI}&rewriteBatchedStatements=true
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
 
@@ -15,11 +15,11 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
 
-logging:
-  level:
-    org:
-      hibernate:
-        type:
-          descriptor:
-            sql: trace
+#logging:
+#  level:
+#    org:
+#      hibernate:
+#        type:
+#          descriptor:
+#            sql: trace
 

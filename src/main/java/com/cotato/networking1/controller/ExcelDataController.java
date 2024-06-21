@@ -21,8 +21,14 @@ public class ExcelDataController {
 
     @PostMapping("")
     public ResponseEntity<?> insertExcelData() throws IOException, InvalidFormatException {
-        excelDataService.saveExcelData("C:\\exceldata\\properties.xlsx");
+        excelDataService.saveExcelData("C:\\exceldata\\properties_big.xlsx");
         return ResponseEntity.status(HttpStatus.OK).body("property data insertion successful");
+    }
+
+    @PostMapping("/bulk")
+    public ResponseEntity<?> insertBulkExcelData() throws IOException, InvalidFormatException {
+        excelDataService.saveBigExcelData("C:\\exceldata\\properties_big.xlsx");
+        return ResponseEntity.status(HttpStatus.OK).body("property data bulk insertion successful");
     }
 
 }

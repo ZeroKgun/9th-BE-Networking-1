@@ -3,6 +3,7 @@ package com.cotato.networking1.service;
 
 import com.cotato.networking1.dto.PropertyListResponse;
 import com.cotato.networking1.entity.Property;
+import com.cotato.networking1.repository.PropertyBulkRepository;
 import com.cotato.networking1.repository.PropertyRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -22,8 +23,32 @@ import java.util.List;
 public class ExcelDataService {
 
     private final PropertyRepository propertyRepository;
+    private final PropertyBulkRepository propertyBulkRepository;
 
     public void saveExcelData(String path) throws IOException, InvalidFormatException {
+
+        List<Property> propertyList = parseExcelData(path);
+
+        long startTime = System.currentTimeMillis();
+        propertyRepository.saveAll(propertyList);
+        long endTime = System.currentTimeMillis();
+
+        long diffTime = (endTime - startTime);
+        System.out.println("----------------------------------------");
+        System.out.println("기존 saveAll 소요시간: " + diffTime + "ms");
+    }
+
+    public void saveBigExcelData(String path) throws IOException, InvalidFormatException {
+        List<Property> propertyList = parseExcelData(path);
+        long startTime = System.currentTimeMillis();
+        propertyBulkRepository.saveAll(propertyList);
+        long endTime = System.currentTimeMillis();
+        long diffTime = (endTime - startTime) / 1000;
+        System.out.println("----------------------------------------");
+        System.out.println("batchUpdate saveAll 소요시간: " + diffTime + "ms");
+    }
+
+    public List<Property> parseExcelData(String path) throws IOException, InvalidFormatException {
         File file = new File(path);
         XSSFWorkbook workbook = new XSSFWorkbook(file);
 
@@ -58,7 +83,7 @@ public class ExcelDataService {
                     .append(buildingMain).toString();
             if(!buildingSub.isEmpty()){
                 roadNameAddress = roadNameAddress+ "-" +buildingSub;
-            } //
+            }
             String landLotNameAddress = new StringBuilder()
                     .append(cityProvince).append(" ")
                     .append(district).append(" ")
@@ -73,9 +98,10 @@ public class ExcelDataService {
                     .build();
 
             propertyList.add(property);
-        }
 
-        propertyRepository.saveAll(propertyList);
+        }
+        workbook.close();
+        return propertyList;
     }
 
 }

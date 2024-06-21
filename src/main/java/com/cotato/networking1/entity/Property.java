@@ -8,7 +8,7 @@ import lombok.*;
 import org.springframework.boot.autoconfigure.web.WebProperties;
 
 
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity
 @Builder
