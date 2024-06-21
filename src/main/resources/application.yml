@@ -4,9 +4,9 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/networking?useSSL=false&serverTimezone=Asia/Seoul
-    username: "root"
-    password: "0726"
+    url: ${DB_URI}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
   jpa:
     hibernate:
@@ -16,10 +16,10 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
 
 logging:
-    level:
-      org:
-        hibernate:
-          type:
-            descriptor:
-              sql: trace
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
 
